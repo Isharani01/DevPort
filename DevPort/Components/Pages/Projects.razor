@@ -1,8 +1,11 @@
 ﻿@page "/projects"
 @using DevPort.Models
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
 @inject DevPort.Data.ApplicationDbContext db
+@inject AuthenticationStateProvider AuthStateProvider
 
-<h3>Projects</h3>
+<h3>My Projects</h3>
 
 <input placeholder="Title" @bind="project.Title" />
 <br />
@@ -17,38 +20,70 @@
 
 <hr />
 
-@foreach (var p in projects)
+@if (projects.Count == 0)
 {
-    <div style="border:1px solid gray; padding:10px; margin:10px;">
-        <h4>@p.Title</h4>
-        <p>@p.Description</p>
-    </div>
+    <p>No projects found.</p>
+}
+else
+{
+    @foreach (var p in projects)
+    {
+        <div style="border:1px solid gray; padding:10px; margin:10px;">
+            <h4>@p.Title</h4>
+            <p>@p.Description</p>
+
+            <button @onclick="() => DeleteProject(p.Id)">Delete</button>
+        </div>
+    }
 }
 
 @code {
 
     private Project project = new();
-
     private List<Project> projects = new();
 
-    protected override void OnInitialized()
+    private string userId = "";
+
+    protected override async Task OnInitializedAsync()
     {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
+
         LoadProjects();
     }
 
     private void LoadProjects()
     {
-        projects = db.Set<Project>().ToList();
+        projects = db.Projects
+            .Where(x => x.UserId == userId)
+            .ToList();
     }
 
     private async Task SaveProject()
     {
+        project.UserId = userId;
+
         db.Add(project);
         await db.SaveChangesAsync();
 
         project = new Project();
+
+        LoadProjects();
+    }
+
+    private async Task DeleteProject(int id)
+    {
+        var item = db.Projects
+            .FirstOrDefault(x => x.Id == id && x.UserId == userId);
+
+        if (item != null)
+        {
+            db.Remove(item);
+            await db.SaveChangesAsync();
+        }
+
         LoadProjects();
     }
 }
-
-

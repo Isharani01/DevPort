@@ -11,6 +11,7 @@
         public string About { get; set; } = string.Empty;
 
         public string Phone { get; set; } = string.Empty;
+        
     }
 }
 

@@ -5,38 +5,41 @@
 <h3>Add Skill</h3>
 
 <input @bind="skill.Name" placeholder="Enter skill" />
-
-<button @onclick="SaveSkill">
-    Save
-</button>
+<button @onclick="SaveSkill">Save</button>
 
 <hr />
 
-<h3>Saved Skills</h3>
+<h3>Skills</h3>
 
-@foreach (var s in skills)
+@if (skills.Count == 0)
 {
-    <div style="border:1px solid gray; padding:10px; margin:10px;">
-        <h4>@s.Name</h4>
+    <p>No skills added yet.</p>
+}
+else
+{
+    @foreach (var s in skills)
+    {
+        <div style="border:1px solid gray; padding:10px; margin:10px;">
+            <h4>@s.Name</h4>
 
-        <button @onclick="() => DeleteSkill(s.Id)">
-            Delete
-        </button>
-    </div>
+            <button @onclick="() => DeleteSkill(s.Id)">
+                Delete
+            </button>
+        </div>
+    }
 }
 
 @code {
 
-    Skill skill = new Skill();
-
-    List<Skill> skills = new();
+    private Skill skill = new();
+    private List<Skill> skills = new();
 
     protected override async Task OnInitializedAsync()
     {
         skills = await SkillService.GetSkills();
     }
 
-    async Task SaveSkill()
+    private async Task SaveSkill()
     {
         await SkillService.AddSkill(skill);
 
@@ -45,14 +48,10 @@
         skills = await SkillService.GetSkills();
     }
 
-    async Task DeleteSkill(int id)
+    private async Task DeleteSkill(int id)
     {
         await SkillService.DeleteSkill(id);
 
         skills = await SkillService.GetSkills();
     }
 }
-
-
-
-
