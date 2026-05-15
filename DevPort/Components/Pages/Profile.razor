@@ -1,1 +1,110 @@
-﻿
+﻿@page "/profile"
+@using DevPort.Models
+@inject DevPort.Data.ApplicationDbContext db
+
+<h3>Create Profile</h3>
+
+<div>
+    <input placeholder="Name" @bind="profile.Name" />
+</div>
+
+<div>
+    <input placeholder="About" @bind="profile.About" />
+</div>
+
+<div>
+    <input placeholder="Phone" @bind="profile.Phone" />
+</div>
+
+<br />
+
+<button @onclick="SaveProfile">Save</button>
+
+<p style="color:green">@message</p>
+
+<hr />
+
+<h3>Saved Profiles</h3>
+
+@foreach (var p in profiles)
+{
+    <div style="border:1px solid gray; padding:10px; margin:10px;">
+        <h4>@p.Name</h4>
+        <p>@p.About</p>
+        <p>@p.Phone</p>
+
+        <button @onclick="() => EditProfile(p)">
+            Edit
+        </button>
+
+        <button @onclick="() => DeleteProfile(p.Id)">
+            Delete
+        </button>
+    </div>
+}
+
+@code {
+
+    private DevPort.Models.Profile profile = new();
+
+    private List<DevPort.Models.Profile> profiles = new();
+
+    private string message = "";
+
+    private bool isEditing = false;
+
+    protected override void OnInitialized()
+    {
+        LoadProfiles();
+    }
+
+    private void LoadProfiles()
+    {
+        profiles = db.Set<DevPort.Models.Profile>().ToList();
+    }
+
+    private async Task SaveProfile()
+    {
+        if (isEditing)
+        {
+            db.Update(profile);
+            message = "Profile updated!";
+        }
+        else
+        {
+            db.Add(profile);
+            message = "Profile saved!";
+        }
+
+        await db.SaveChangesAsync();
+
+        profile = new DevPort.Models.Profile();
+
+        isEditing = false;
+
+        LoadProfiles();
+    }
+
+    private void EditProfile(DevPort.Models.Profile p)
+    {
+        profile = p;
+        isEditing = true;
+    }
+
+    private async Task DeleteProfile(int id)
+    {
+        var item = db.Set<DevPort.Models.Profile>()
+            .FirstOrDefault(x => x.Id == id);
+
+        if (item != null)
+        {
+            db.Remove(item);
+            await db.SaveChangesAsync();
+        }
+
+        LoadProfiles();
+    }
+}
+
+
+
