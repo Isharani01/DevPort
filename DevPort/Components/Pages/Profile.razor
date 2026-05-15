@@ -5,26 +5,31 @@
 @inject DevPort.Data.ApplicationDbContext db
 @inject AuthenticationStateProvider AuthStateProvider
 
-<h3>Add Project</h3>
+<h3 class="mb-3">My Projects</h3>
 
-<div>
-    <input placeholder="Title" @bind="project.Title" />
+<!-- INPUT SECTION -->
+<div class="card-ui">
+
+    <input class="form-control mb-2"
+           placeholder="Project Title"
+           @bind="project.Title" />
+
+    <textarea class="form-control mb-2"
+              placeholder="Project Description"
+              @bind="project.Description"></textarea>
+
+    <button class="btn btn-primary"
+            @onclick="SaveProject">
+        Save Project
+    </button>
+
+    <p class="text-success mt-2">@message</p>
+
 </div>
-
-<div>
-    <input placeholder="Description" @bind="project.Description" />
-</div>
-
-<br />
-
-<button @onclick="SaveProject">Save</button>
-
-<p style="color:green">@message</p>
 
 <hr />
 
-<h3>My Projects</h3>
-
+<!-- LIST -->
 @if (projects.Count == 0)
 {
     <p>No projects found.</p>
@@ -33,11 +38,16 @@ else
 {
     @foreach (var p in projects)
     {
-        <div style="border:1px solid gray; padding:10px; margin:10px;">
+        <div class="card-ui">
+
             <h4>@p.Title</h4>
             <p>@p.Description</p>
 
-            <button @onclick="() => DeleteProject(p.Id)">Delete</button>
+            <button class="btn btn-danger btn-sm"
+                    @onclick="() => DeleteProject(p.Id)">
+                Delete
+            </button>
+
         </div>
     }
 }
@@ -54,6 +64,7 @@ else
     {
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
+
         userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
 
         LoadProjects();
@@ -75,7 +86,7 @@ else
 
         project = new Project();
 
-        message = "Project saved!";
+        message = "Project saved successfully!";
 
         LoadProjects();
     }
