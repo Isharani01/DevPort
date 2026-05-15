@@ -1,23 +1,45 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<div>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+    <!-- TOP NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+
+        <a class="navbar-brand fw-bold" href="/">DevPort</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navMenu">
+
+            <ul class="navbar-nav ms-auto">
+
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="/">Home</NavLink>
+                </li>
+
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="/profile">Profile</NavLink>
+                </li>
+
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="/add-skill">Skills</NavLink>
+                </li>
+
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="/projects">Projects</NavLink>
+                </li>
+
+            </ul>
+
         </div>
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+    </nav>
 
-<div id="blazor-error-ui" data-nosnippet>
-    An unhandled error has occurred.
-    <a href="." class="reload">Reload</a>
-    <span class="dismiss">🗙</span>
+    <!-- PAGE CONTENT -->
+    <main class="container mt-4">
+        @Body
+    </main>
+
 </div>
