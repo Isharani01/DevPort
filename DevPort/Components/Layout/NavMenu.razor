@@ -1,1 +1,144 @@
-﻿
+﻿@implements IDisposable
+@inject NavigationManager NavigationManager
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">DevPort</a>
+    </div>
+</div>
+
+<input type="checkbox"
+       title="Navigation menu"
+       class="navbar-toggler" />
+
+<div class="nav-scrollable"
+     onclick="document.querySelector('.navbar-toggler').click()">
+
+    <nav class="nav flex-column">
+
+        <!-- HOME -->
+        <div class="nav-item px-3">
+            <NavLink class="nav-link"
+                     href=""
+                     Match="NavLinkMatch.All">
+                Home
+            </NavLink>
+        </div>
+
+        <!-- PROFILE -->
+        <div class="nav-item px-3">
+            <NavLink class="nav-link"
+                     href="profile">
+                Profile
+            </NavLink>
+        </div>
+
+        <!-- SKILLS -->
+        <div class="nav-item px-3">
+            <NavLink class="nav-link"
+                     href="add-skill">
+                Skills
+            </NavLink>
+        </div>
+
+        <!-- PROJECTS -->
+        <div class="nav-item px-3">
+            <NavLink class="nav-link"
+                     href="projects">
+                Projects
+            </NavLink>
+        </div>
+
+        <!-- AUTH -->
+        <div class="nav-item px-3">
+            <NavLink class="nav-link"
+                     href="auth">
+                Auth Required
+            </NavLink>
+        </div>
+
+        <AuthorizeView>
+
+            <Authorized>
+
+                <!-- USER -->
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link"
+                             href="Account/Manage">
+                        @context.User.Identity?.Name
+                    </NavLink>
+                </div>
+
+                <!-- LOGOUT -->
+                <div class="nav-item px-3">
+                    <form action="Account/Logout"
+                          method="post">
+
+                        <AntiforgeryToken />
+
+                        <input type="hidden"
+                               name="ReturnUrl"
+                               value="@currentUrl" />
+
+                        <button type="submit"
+                                class="nav-link border-0 bg-transparent">
+                            Logout
+                        </button>
+
+                    </form>
+                </div>
+
+            </Authorized>
+
+            <NotAuthorized>
+
+                <!-- REGISTER -->
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link"
+                             href="Account/Register">
+                        Register
+                    </NavLink>
+                </div>
+
+                <!-- LOGIN -->
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link"
+                             href="Account/Login">
+                        Login
+                    </NavLink>
+                </div>
+
+            </NotAuthorized>
+
+        </AuthorizeView>
+
+    </nav>
+</div>
+
+@code {
+
+    private string? currentUrl;
+
+    protected override void OnInitialized()
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+
+        NavigationManager.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
+
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= OnLocationChanged;
+    }
+}
+
+
+
+
