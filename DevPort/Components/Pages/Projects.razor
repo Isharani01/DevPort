@@ -5,21 +5,29 @@
 @inject DevPort.Data.ApplicationDbContext db
 @inject AuthenticationStateProvider AuthStateProvider
 
-<h3>My Projects</h3>
+<h3 class="mb-3">My Projects</h3>
 
-<input placeholder="Title" @bind="project.Title" />
-<br />
-<br />
+<!-- INPUT SECTION -->
+<div class="card-ui">
 
-<textarea placeholder="Description" @bind="project.Description"></textarea>
+    <input class="form-control mb-2"
+           placeholder="Title"
+           @bind="project.Title" />
 
-<br />
-<br />
+    <textarea class="form-control mb-2"
+              placeholder="Description"
+              @bind="project.Description"></textarea>
 
-<button @onclick="SaveProject">Add Project</button>
+    <button class="btn btn-primary w-100"
+            @onclick="SaveProject">
+        Add Project
+    </button>
+
+</div>
 
 <hr />
 
+<!-- LIST -->
 @if (projects.Count == 0)
 {
     <p>No projects found.</p>
@@ -28,11 +36,16 @@ else
 {
     @foreach (var p in projects)
     {
-        <div style="border:1px solid gray; padding:10px; margin:10px;">
+        <div class="card-ui">
+
             <h4>@p.Title</h4>
             <p>@p.Description</p>
 
-            <button @onclick="() => DeleteProject(p.Id)">Delete</button>
+            <button class="btn btn-danger btn-sm"
+                    @onclick="() => DeleteProject(p.Id)">
+                Delete
+            </button>
+
         </div>
     }
 }
@@ -63,6 +76,9 @@ else
 
     private async Task SaveProject()
     {
+        if (string.IsNullOrWhiteSpace(project.Title))
+            return;
+
         project.UserId = userId;
 
         db.Add(project);
