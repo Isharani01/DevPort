@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<div>
+<div class="@documentClass">
 
     <!-- TOP NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
@@ -15,21 +15,109 @@
 
             <ul class="navbar-nav ms-auto">
 
+                <!-- HOME -->
                 <li class="nav-item">
                     <NavLink class="nav-link" href="/">Home</NavLink>
                 </li>
 
+                <!-- PROFILE -->
                 <li class="nav-item">
                     <NavLink class="nav-link" href="/profile">Profile</NavLink>
                 </li>
 
+                <!-- SKILLS -->
                 <li class="nav-item">
                     <NavLink class="nav-link" href="/add-skill">Skills</NavLink>
                 </li>
 
+                <!-- PROJECTS -->
                 <li class="nav-item">
                     <NavLink class="nav-link" href="/projects">Projects</NavLink>
                 </li>
+
+                <!-- THEME BUTTON -->
+                <li class="nav-item">
+
+                    <button class="theme-toggle-btn"
+                            @onclick="ToggleTheme">
+
+                        @(isDarkMode ? "☀️" : "🌙")
+
+                    </button>
+
+                </li>
+
+                <!-- AUTH -->
+                <AuthorizeView>
+
+                    <Authorized Context="auth">
+
+                        <!-- USER -->
+                        <li class="nav-item">
+
+                            <NavLink class="nav-link"
+                                     href="/Account/Manage">
+
+                                @auth.User.Identity?.Name
+
+                            </NavLink>
+
+                        </li>
+
+                        <!-- LOGOUT -->
+                        <li class="nav-item">
+
+                            <form action="/Account/Logout"
+                                  method="post">
+
+                                <AntiforgeryToken />
+
+                                <input type="hidden"
+                                       name="returnUrl"
+                                       value="/" />
+
+                                <button class="btn btn-danger btn-sm px-3"
+                                        type="submit">
+
+                                    Logout
+
+                                </button>
+
+                            </form>
+
+                        </li>
+
+                    </Authorized>
+
+                    <NotAuthorized>
+
+                        <!-- LOGIN -->
+                        <li class="nav-item">
+
+                            <NavLink class="btn btn-outline-light me-2"
+                                     href="/Account/Login">
+
+                                Login
+
+                            </NavLink>
+
+                        </li>
+
+                        <!-- REGISTER -->
+                        <li class="nav-item">
+
+                            <NavLink class="btn btn-primary px-3"
+                                     href="/Account/Register">
+
+                                Register
+
+                            </NavLink>
+
+                        </li>
+
+                    </NotAuthorized>
+
+                </AuthorizeView>
 
             </ul>
 
@@ -43,3 +131,24 @@
     </main>
 
 </div>
+
+@code {
+
+    private bool isDarkMode = true;
+
+    private string documentClass = "dark-mode";
+
+    private void ToggleTheme()
+    {
+        isDarkMode = !isDarkMode;
+
+        if (isDarkMode)
+        {
+            documentClass = "dark-mode";
+        }
+        else
+        {
+            documentClass = "light-mode";
+        }
+    }
+}
