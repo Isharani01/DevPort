@@ -1,7 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @using Microsoft.AspNetCore.Components.Authorization
 
-<div>
+<div class="@documentClass">
 
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg custom-navbar px-4">
@@ -23,34 +23,52 @@
 
             <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
 
+                <!-- HOME -->
                 <li class="nav-item">
                     <NavLink class="nav-link" href="/">
                         Home
                     </NavLink>
                 </li>
 
+                <!-- PROFILE -->
                 <li class="nav-item">
                     <NavLink class="nav-link" href="/profile">
                         Profile
                     </NavLink>
                 </li>
 
+                <!-- SKILLS -->
                 <li class="nav-item">
                     <NavLink class="nav-link" href="/add-skill">
                         Skills
                     </NavLink>
                 </li>
 
+                <!-- PROJECTS -->
                 <li class="nav-item">
                     <NavLink class="nav-link" href="/projects">
                         Projects
                     </NavLink>
                 </li>
 
+                <!-- THEME BUTTON -->
+                <li class="nav-item">
+
+                    <button class="theme-toggle-btn"
+                            @onclick="ToggleTheme">
+
+                        @(isDarkMode ? "☀️" : "🌙")
+
+                    </button>
+
+                </li>
+
+                <!-- AUTH -->
                 <AuthorizeView>
 
                     <Authorized Context="auth">
 
+                        <!-- USER -->
                         <li class="nav-item">
 
                             <NavLink class="nav-link"
@@ -62,6 +80,7 @@
 
                         </li>
 
+                        <!-- LOGOUT -->
                         <li class="nav-item">
 
                             <form action="/Account/Logout"
@@ -88,6 +107,7 @@
 
                     <NotAuthorized>
 
+                        <!-- LOGIN -->
                         <li class="nav-item">
 
                             <NavLink class="btn btn-outline-light me-2"
@@ -99,6 +119,7 @@
 
                         </li>
 
+                        <!-- REGISTER -->
                         <li class="nav-item">
 
                             <NavLink class="btn btn-primary px-3"
@@ -128,3 +149,24 @@
     </main>
 
 </div>
+
+@code {
+
+    private bool isDarkMode = true;
+
+    private string documentClass = "dark-mode";
+
+    private void ToggleTheme()
+    {
+        isDarkMode = !isDarkMode;
+
+        if (isDarkMode)
+        {
+            documentClass = "dark-mode";
+        }
+        else
+        {
+            documentClass = "light-mode";
+        }
+    }
+}
