@@ -1,7 +1,8 @@
-namespace DevPort.Components.Account;
-
-public enum PasskeyOperation
+namespace DevPort.Components.Account
 {
-    Create = 0,
-    Request = 1,
+    public enum PasskeyOperation
+    {
+        Create = 0,
+        Request = 1,
+    }
 }
