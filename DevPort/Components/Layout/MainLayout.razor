@@ -1,44 +1,74 @@
 ﻿@inherits LayoutComponentBase
+@using Microsoft.AspNetCore.Components.Authorization
 
-<div class="@documentClass">
+<div class="@(isDarkMode ? "dark-mode" : "light-mode")">
 
-    <!-- TOP NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+    <!-- NAVBAR -->
 
-        <a class="navbar-brand fw-bold" href="/">DevPort</a>
+    <nav class="navbar navbar-expand-lg custom-navbar px-4">
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <a class="navbar-brand fw-bold fs-4" href="/">
+            DevPort 🚀
+        </a>
+
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navMenu">
+
             <span class="navbar-toggler-icon"></span>
+
         </button>
 
         <div class="collapse navbar-collapse" id="navMenu">
 
-            <ul class="navbar-nav ms-auto">
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
 
                 <!-- HOME -->
+
                 <li class="nav-item">
-                    <NavLink class="nav-link" href="/">Home</NavLink>
+
+                    <NavLink class="nav-link" href="/">
+                        Home
+                    </NavLink>
+
                 </li>
 
                 <!-- PROFILE -->
+
                 <li class="nav-item">
-                    <NavLink class="nav-link" href="/profile">Profile</NavLink>
+
+                    <NavLink class="nav-link" href="/profile">
+                        Profile
+                    </NavLink>
+
                 </li>
 
                 <!-- SKILLS -->
+
                 <li class="nav-item">
-                    <NavLink class="nav-link" href="/add-skill">Skills</NavLink>
+
+                    <NavLink class="nav-link" href="/add-skill">
+                        Skills
+                    </NavLink>
+
                 </li>
 
                 <!-- PROJECTS -->
+
                 <li class="nav-item">
-                    <NavLink class="nav-link" href="/projects">Projects</NavLink>
+
+                    <NavLink class="nav-link" href="/projects">
+                        Projects
+                    </NavLink>
+
                 </li>
 
                 <!-- THEME BUTTON -->
+
                 <li class="nav-item">
 
-                    <button class="theme-toggle-btn"
+                    <button class="theme-btn"
                             @onclick="ToggleTheme">
 
                         @(isDarkMode ? "☀️" : "🌙")
@@ -48,11 +78,13 @@
                 </li>
 
                 <!-- AUTH -->
+
                 <AuthorizeView>
 
                     <Authorized Context="auth">
 
                         <!-- USER -->
+
                         <li class="nav-item">
 
                             <NavLink class="nav-link"
@@ -65,6 +97,7 @@
                         </li>
 
                         <!-- LOGOUT -->
+
                         <li class="nav-item">
 
                             <form action="/Account/Logout"
@@ -92,6 +125,7 @@
                     <NotAuthorized>
 
                         <!-- LOGIN -->
+
                         <li class="nav-item">
 
                             <NavLink class="btn btn-outline-light me-2"
@@ -102,18 +136,9 @@
                             </NavLink>
 
                         </li>
-                        <li class="nav-item">
-
-                            <NavLink class="nav-link"
-                                     href="/template">
-
-                                Template
-
-                            </NavLink>
-
-                        </li>
 
                         <!-- REGISTER -->
+
                         <li class="nav-item">
 
                             <NavLink class="btn btn-primary px-3"
@@ -136,8 +161,11 @@
     </nav>
 
     <!-- PAGE CONTENT -->
-    <main class="container mt-4">
+
+    <main class="container py-4">
+
         @Body
+
     </main>
 
 </div>
@@ -146,19 +174,8 @@
 
     private bool isDarkMode = true;
 
-    private string documentClass = "dark-mode";
-
     private void ToggleTheme()
     {
         isDarkMode = !isDarkMode;
-
-        if (isDarkMode)
-        {
-            documentClass = "dark-mode";
-        }
-        else
-        {
-            documentClass = "light-mode";
-        }
     }
 }
