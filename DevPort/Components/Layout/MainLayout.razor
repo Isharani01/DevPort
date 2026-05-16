@@ -1,35 +1,118 @@
 ﻿@inherits LayoutComponentBase
+@using Microsoft.AspNetCore.Components.Authorization
 
 <div>
 
-    <!-- TOP NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg custom-navbar px-4">
 
-        <a class="navbar-brand fw-bold" href="/">DevPort</a>
+        <a class="navbar-brand fs-4" href="/">
+            DevPort 🚀
+        </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navMenu">
+
             <span class="navbar-toggler-icon"></span>
+
         </button>
 
         <div class="collapse navbar-collapse" id="navMenu">
 
-            <ul class="navbar-nav ms-auto">
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
 
                 <li class="nav-item">
-                    <NavLink class="nav-link" href="/">Home</NavLink>
+                    <NavLink class="nav-link" href="/">
+                        Home
+                    </NavLink>
                 </li>
 
                 <li class="nav-item">
-                    <NavLink class="nav-link" href="/profile">Profile</NavLink>
+                    <NavLink class="nav-link" href="/profile">
+                        Profile
+                    </NavLink>
                 </li>
 
                 <li class="nav-item">
-                    <NavLink class="nav-link" href="/add-skill">Skills</NavLink>
+                    <NavLink class="nav-link" href="/add-skill">
+                        Skills
+                    </NavLink>
                 </li>
 
                 <li class="nav-item">
-                    <NavLink class="nav-link" href="/projects">Projects</NavLink>
+                    <NavLink class="nav-link" href="/projects">
+                        Projects
+                    </NavLink>
                 </li>
+
+                <AuthorizeView>
+
+                    <Authorized Context="auth">
+
+                        <li class="nav-item">
+
+                            <NavLink class="nav-link"
+                                     href="/Account/Manage">
+
+                                @auth.User.Identity?.Name
+
+                            </NavLink>
+
+                        </li>
+
+                        <li class="nav-item">
+
+                            <form action="/Account/Logout"
+                                  method="post">
+
+                                <AntiforgeryToken />
+
+                                <input type="hidden"
+                                       name="returnUrl"
+                                       value="/" />
+
+                                <button class="btn btn-danger btn-sm px-3"
+                                        type="submit">
+
+                                    Logout
+
+                                </button>
+
+                            </form>
+
+                        </li>
+
+                    </Authorized>
+
+                    <NotAuthorized>
+
+                        <li class="nav-item">
+
+                            <NavLink class="btn btn-outline-light me-2"
+                                     href="/Account/Login">
+
+                                Login
+
+                            </NavLink>
+
+                        </li>
+
+                        <li class="nav-item">
+
+                            <NavLink class="btn btn-primary px-3"
+                                     href="/Account/Register">
+
+                                Register
+
+                            </NavLink>
+
+                        </li>
+
+                    </NotAuthorized>
+
+                </AuthorizeView>
 
             </ul>
 
@@ -37,9 +120,11 @@
 
     </nav>
 
-    <!-- PAGE CONTENT -->
-    <main class="container mt-4">
+    <!-- CONTENT -->
+    <main class="container py-4">
+
         @Body
+
     </main>
 
 </div>
