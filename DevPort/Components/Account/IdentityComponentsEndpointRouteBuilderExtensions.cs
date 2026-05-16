@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using System.Text.Json;
 using DevPort.Components.Account.Pages;
 using DevPort.Components.Account.Pages.Manage;
 using DevPort.Data;
@@ -8,8 +10,6 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using System.Security.Claims;
-using System.Text.Json;
 
 namespace Microsoft.AspNetCore.Routing
 {
@@ -109,7 +109,7 @@ namespace Microsoft.AspNetCore.Routing
             });
 
             var loggerFactory = endpoints.ServiceProvider.GetRequiredService<ILoggerFactory>();
-            var downloadLogger = loggerFactory.CreateLogger("DownloadPersonalData");   
+            var downloadLogger = loggerFactory.CreateLogger("DownloadPersonalData");
 
             manageGroup.MapPost("/DownloadPersonalData", async (
                 HttpContext context,
