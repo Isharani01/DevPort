@@ -1,4 +1,5 @@
 ﻿@inherits LayoutComponentBase
+@using Microsoft.AspNetCore.Components.Authorization
 
 <div>
 
@@ -15,21 +16,73 @@
 
             <ul class="navbar-nav ms-auto">
 
+                <!-- HOME -->
                 <li class="nav-item">
                     <NavLink class="nav-link" href="/">Home</NavLink>
                 </li>
 
+                <!-- PROFILE -->
                 <li class="nav-item">
                     <NavLink class="nav-link" href="/profile">Profile</NavLink>
                 </li>
 
+                <!-- SKILLS -->
                 <li class="nav-item">
                     <NavLink class="nav-link" href="/add-skill">Skills</NavLink>
                 </li>
 
+                <!-- PROJECTS -->
                 <li class="nav-item">
                     <NavLink class="nav-link" href="/projects">Projects</NavLink>
                 </li>
+
+                <!-- AUTH SECTION -->
+                <AuthorizeView>
+
+                    <Authorized Context="auth">
+
+                        <!-- USER NAME -->
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="/Account/Manage">
+                                @auth.User.Identity?.Name
+                            </NavLink>
+                        </li>
+
+                        <!-- LOGOUT -->
+                        <li class="nav-item">
+                            <form action="/Account/Logout" method="post">
+                                <AntiforgeryToken />
+
+                                <!-- FIX: REQUIRED FIELD -->
+                                <input type="hidden" name="returnUrl" value="/" />
+
+                                <button class="btn btn-link nav-link" type="submit">
+                                    Logout
+                                </button>
+                            </form>
+                        </li>
+
+                    </Authorized>
+
+                    <NotAuthorized>
+
+                        <!-- LOGIN -->
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="/Account/Login">
+                                Login
+                            </NavLink>
+                        </li>
+
+                        <!-- REGISTER -->
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="/Account/Register">
+                                Register
+                            </NavLink>
+                        </li>
+
+                    </NotAuthorized>
+
+                </AuthorizeView>
 
             </ul>
 

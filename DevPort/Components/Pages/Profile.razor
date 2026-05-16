@@ -1,108 +1,100 @@
-﻿@page "/test-projects"
+﻿@page "/profile"
 @using DevPort.Models
-@using Microsoft.AspNetCore.Components.Authorization
-@using System.Security.Claims
 @inject DevPort.Data.ApplicationDbContext db
-@inject AuthenticationStateProvider AuthStateProvider
 
-<h3 class="mb-3">My Projects</h3>
+<h3>Create Profile</h3>
 
-<!-- INPUT SECTION -->
-<div class="card-ui">
-
-    <input class="form-control mb-2"
-           placeholder="Project Title"
-           @bind="project.Title" />
-
-    <textarea class="form-control mb-2"
-              placeholder="Project Description"
-              @bind="project.Description"></textarea>
-
-    <button class="btn btn-primary w-100"
-            @onclick="SaveProject">
-        Save Project
-    </button>
-
-    @if (!string.IsNullOrEmpty(message))
-    {
-        <p class="text-success mt-2 mb-0">@message</p>
-    }
-
+<div>
+    <input placeholder="Name" @bind="profile.Name" />
 </div>
+
+<div>
+    <input placeholder="About" @bind="profile.About" />
+</div>
+
+<div>
+    <input placeholder="Phone" @bind="profile.Phone" />
+</div>
+
+<br />
+
+<button @onclick="SaveProfile">Save</button>
+
+<p style="color:green">@message</p>
 
 <hr />
 
-<!-- LIST -->
-@if (projects == null || projects.Count == 0)
+<h3>Saved Profiles</h3>
+
+@foreach (var p in profiles)
 {
-    <p>No projects found.</p>
-}
-else
-{
-    @foreach (var p in projects)
-    {
-        <div class="card-ui">
+    <div style="border:1px solid gray; padding:10px; margin:10px;">
+        <h4>@p.Name</h4>
+        <p>@p.About</p>
+        <p>@p.Phone</p>
 
-            <h4 class="mb-1">@p.Title</h4>
-            <p class="mb-2">@p.Description</p>
+        <button @onclick="() => EditProfile(p)">
+            Edit
+        </button>
 
-            <button class="btn btn-danger btn-sm"
-                    @onclick="() => DeleteProject(p.Id)">
-                Delete
-            </button>
-
-        </div>
-    }
+        <button @onclick="() => DeleteProfile(p.Id)">
+            Delete
+        </button>
+    </div>
 }
 
 @code {
 
-    private Project project = new();
-    private List<Project> projects = new();
+    private DevPort.Models.Profile profile = new();
+
+    private List<DevPort.Models.Profile> profiles = new();
 
     private string message = "";
-    private string userId = "";
 
-    protected override async Task OnInitializedAsync()
+    private bool isEditing = false;
+
+    protected override void OnInitialized()
     {
-        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
-
-        LoadProjects();
+        LoadProfiles();
     }
 
-    private void LoadProjects()
+    private void LoadProfiles()
     {
-        projects = db.Projects
-            .Where(x => x.UserId == userId)
-            .ToList();
+        profiles = db.Set<DevPort.Models.Profile>().ToList();
     }
 
-    private async Task SaveProject()
+    private async Task SaveProfile()
     {
-        if (string.IsNullOrWhiteSpace(project.Title))
+        if (isEditing)
         {
-            message = "Title is required!";
-            return;
+            db.Update(profile);
+            message = "Profile updated!";
+        }
+        else
+        {
+            db.Add(profile);
+            message = "Profile saved!";
         }
 
-        project.UserId = userId;
-
-        db.Add(project);
         await db.SaveChangesAsync();
 
-        project = new Project();
-        message = "Project saved successfully!";
+        profile = new DevPort.Models.Profile();
 
-        LoadProjects();
+        isEditing = false;
+
+        LoadProfiles();
     }
 
-    private async Task DeleteProject(int id)
+    private void EditProfile(DevPort.Models.Profile p)
     {
-        var item = db.Projects
-            .FirstOrDefault(x => x.Id == id && x.UserId == userId);
+        profile = p;
+        isEditing = true;
+    }
+
+    private async Task DeleteProfile(int id)
+    {
+        var item = db.Set<DevPort.Models.Profile>()
+            .FirstOrDefault(x => x.Id == id);
 
         if (item != null)
         {
@@ -110,6 +102,9 @@ else
             await db.SaveChangesAsync();
         }
 
-        LoadProjects();
+        LoadProfiles();
     }
 }
+
+
+
