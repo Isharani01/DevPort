@@ -1,102 +1,144 @@
 ﻿@page "/template"
+@rendermode InteractiveServer
+@inject DevPort.Services.TemplateService TemplateService
+@inject NavigationManager Navigation
+<section class="templates-page">
 
-<section class="canva-hero">
+    <div class="templates-header">
 
-    <div class="hero-left">
-
-        <p class="template-badge">
-            ✨ Modern Portfolio Builder
+        <p class="hero-badge">
+            ✨ Premium Templates
         </p>
 
         <h1>
-            Create Beautiful
-            Developer Portfolios
+            Explore Beautiful Portfolio Designs
         </h1>
 
-        <p class="hero-text">
-
-            Showcase your projects,
-            skills and achievements
-            with a stunning modern portfolio.
-
+        <p>
+            Choose modern layouts crafted for developers,
+            designers and creators.
         </p>
 
-        <div class="hero-buttons">
+    </div>
 
-            <a href="/projects"
-                   class="btn btn-primary btn-lg">
+    <!-- TEMPLATE GRID -->
 
-                Explore Projects
+    <div class="template-grid">
 
-            </a>
+        <!-- TEMPLATE 1 -->
 
-            <a href="/profile"
-                   class="btn btn-light btn-lg">
+        <div class="template-preview-card">
 
-                My Profile
+            <div class="template-preview one">
 
-            </a>
+                <div class="mini-navbar"></div>
+
+                <div class="mini-content">
+
+                    <div class="mini-title"></div>
+
+                    <div class="mini-text"></div>
+
+                    <div class="mini-buttons">
+
+                        <span></span>
+                        <span></span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="template-info">
+
+                <h3>
+                    Minimal Dark
+                </h3>
+
+                <p>
+                    Elegant developer portfolio
+                    with modern dark aesthetics.
+                </p>
+
+                <a href="/setup"
+                       class="btn btn-primary">
+
+                    Use Template
+
+                </a>
+
+            </div>
 
         </div>
 
-    </div>
+        <!-- TEMPLATE 2 -->
 
-    <div class="hero-right">
+        <div class="template-preview-card">
 
-        <div class="template-card">
+            <div class="template-preview two">
 
-            <h3>🚀 Frontend Developer</h3>
+                <div class="glass-box"></div>
 
-            <p>
-                Building elegant UI experiences
-                using modern technologies.
-            </p>
+                <div class="glass-box small"></div>
+
+            </div>
+
+            <div class="template-info">
+
+                <h3>
+                    Glass UI
+                </h3>
+
+                <p>
+                    Premium glassmorphism
+                    portfolio experience.
+                </p>
+
+                <a href="/setup"
+                       class="btn btn-primary">
+
+                    Use Template
+
+                </a>
+
+            </div>
 
         </div>
 
-        <div class="template-card small-card">
+        <!-- TEMPLATE 3 -->
 
-            <h4>🔥 Skills</h4>
+        <div class="template-preview-card">
 
-            <p>Blazor • C# • HTML • CSS</p>
+            <div class="template-preview three">
+
+                <div class="gradient-circle"></div>
+
+                <div class="gradient-circle second"></div>
+
+            </div>
+
+            <div class="template-info">
+
+                <h3>
+                    Creative Gradient
+                </h3>
+
+                <p>
+                    Bold colorful layouts
+                    for modern creators.
+                </p>
+
+                <a href="/setup"
+                       class="btn btn-primary">
+
+                    Use Template
+
+                </a>
+
+            </div>
 
         </div>
-
-    </div>
-
-</section>
-
-<!-- FEATURES -->
-
-<section class="template-features">
-
-    <div class="feature-box">
-
-        <h3>🎨 Beautiful UI</h3>
-
-        <p>
-            Modern layouts inspired by premium websites.
-        </p>
-
-    </div>
-
-    <div class="feature-box">
-
-        <h3>⚡ Fast Performance</h3>
-
-        <p>
-            Responsive and optimized developer portfolios.
-        </p>
-
-    </div>
-
-    <div class="feature-box">
-
-        <h3>🌙 Dark Mode</h3>
-
-        <p>
-            Elegant dark and light theme support.
-        </p>
 
     </div>
 

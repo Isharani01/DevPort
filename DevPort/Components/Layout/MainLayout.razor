@@ -11,6 +11,8 @@
             DevPort 🚀
         </a>
 
+        <!-- TOGGLER -->
+
         <button class="navbar-toggler"
                 type="button"
                 data-bs-toggle="collapse"
@@ -20,46 +22,48 @@
 
         </button>
 
-        <div class="collapse navbar-collapse" id="navMenu">
+        <!-- NAV MENU -->
 
-            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+        <div class="collapse navbar-collapse"
+             id="navMenu">
+
+            <ul class="navbar-nav ms-auto align-items-center gap-3">
 
                 <!-- HOME -->
 
                 <li class="nav-item">
 
-                    <NavLink class="nav-link" href="/">
+                    <NavLink class="nav-link"
+                             href="/">
+
                         Home
+
                     </NavLink>
 
                 </li>
 
-                <!-- PROFILE -->
+                <!-- TEMPLATES -->
 
                 <li class="nav-item">
 
-                    <NavLink class="nav-link" href="/profile">
-                        Profile
+                    <NavLink class="nav-link"
+                             href="/template">
+
+                        Templates
+
                     </NavLink>
 
                 </li>
 
-                <!-- SKILLS -->
+                <!-- PORTFOLIO -->
 
                 <li class="nav-item">
 
-                    <NavLink class="nav-link" href="/add-skill">
-                        Skills
-                    </NavLink>
+                    <NavLink class="nav-link"
+                             href="/portfolio">
 
-                </li>
+                        Portfolio
 
-                <!-- PROJECTS -->
-
-                <li class="nav-item">
-
-                    <NavLink class="nav-link" href="/projects">
-                        Projects
                     </NavLink>
 
                 </li>
@@ -68,7 +72,7 @@
 
                 <li class="nav-item">
 
-                    <button class="theme-btn"
+                    <button class="theme-toggle-btn"
                             @onclick="ToggleTheme">
 
                         @(isDarkMode ? "☀️" : "🌙")
@@ -81,22 +85,7 @@
 
                 <AuthorizeView>
 
-                    <Authorized Context="auth">
-
-                        <!-- USER -->
-
-                        <li class="nav-item">
-
-                            <NavLink class="nav-link"
-                                     href="/Account/Manage">
-
-                                @auth.User.Identity?.Name
-
-                            </NavLink>
-
-                        </li>
-
-                        <!-- LOGOUT -->
+                    <Authorized>
 
                         <li class="nav-item">
 
@@ -105,12 +94,8 @@
 
                                 <AntiforgeryToken />
 
-                                <input type="hidden"
-                                       name="returnUrl"
-                                       value="/" />
-
-                                <button class="btn btn-danger btn-sm px-3"
-                                        type="submit">
+                                <button type="submit"
+                                        class="btn btn-outline-light rounded-pill px-4">
 
                                     Logout
 
@@ -124,11 +109,9 @@
 
                     <NotAuthorized>
 
-                        <!-- LOGIN -->
-
                         <li class="nav-item">
 
-                            <NavLink class="btn btn-outline-light me-2"
+                            <NavLink class="btn btn-outline-light rounded-pill px-4"
                                      href="/Account/Login">
 
                                 Login
@@ -137,14 +120,12 @@
 
                         </li>
 
-                        <!-- REGISTER -->
-
                         <li class="nav-item">
 
-                            <NavLink class="btn btn-primary px-3"
+                            <NavLink class="btn btn-primary rounded-pill px-4"
                                      href="/Account/Register">
 
-                                Register
+                                Get Started
 
                             </NavLink>
 
