@@ -166,13 +166,18 @@
             IsDarkMode ? "dark" : "light");
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        var savedTheme =
-            await JS.InvokeAsync<string>(
-                "localStorage.getItem",
-                "theme");
+        if (firstRender)
+        {
+            var savedTheme =
+                await JS.InvokeAsync<string>(
+                    "localStorage.getItem",
+                    "theme");
 
-        IsDarkMode = savedTheme != "light";
+            IsDarkMode = savedTheme != "light";
+
+            StateHasChanged();
+        }
     }
 }
