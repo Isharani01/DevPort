@@ -38,7 +38,7 @@
                     <li class="nav-item">
 
                         <a class="nav-link"
-                           href="/">
+                               href="/">
 
                             Home
 
@@ -49,7 +49,7 @@
                     <li class="nav-item">
 
                         <a class="nav-link"
-                           href="#about">
+                               href="#about">
 
                             About
 
@@ -60,9 +60,9 @@
                     <li class="nav-item">
 
                         <a class="nav-link"
-                           href="#projects">
+                               href="#projects">
 
-                            Projects
+                            Templates
 
                         </a>
 
@@ -71,7 +71,7 @@
                     <li class="nav-item">
 
                         <a class="nav-link"
-                           href="#contact">
+                               href="#contact">
 
                             Contact
 
@@ -81,57 +81,27 @@
 
                     <!-- AUTH -->
 
-                    <AuthorizeView>
+                    <li class="nav-item ms-3">
 
-                        <Authorized>
+                        <NavLink class="login-btn"
+                                 href="/Account/Login">
 
-                            <li class="nav-item ms-3">
+                            Login
 
-                                <form action="/Account/Logout"
-                                      method="post">
+                        </NavLink>
 
-                                    <AntiforgeryToken />
+                    </li>
 
-                                    <button type="submit"
-                                            class="login-btn">
+                    <li class="nav-item ms-2">
 
-                                        Logout
+                        <NavLink class="start-btn"
+                                 href="/Account/Register">
 
-                                    </button>
+                            Sign Up
 
-                                </form>
+                        </NavLink>
 
-                            </li>
-
-                        </Authorized>
-
-                        <NotAuthorized>
-
-                            <li class="nav-item ms-3">
-
-                                <NavLink class="login-btn"
-                                         href="/Account/Login">
-
-                                    Login
-
-                                </NavLink>
-
-                            </li>
-
-                            <li class="nav-item ms-2">
-
-                                <NavLink class="start-btn"
-                                         href="/Account/Register">
-
-                                    Get Started
-
-                                </NavLink>
-
-                            </li>
-
-                        </NotAuthorized>
-
-                    </AuthorizeView>
+                    </li>
 
                 </ul>
 
