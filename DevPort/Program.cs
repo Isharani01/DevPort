@@ -8,7 +8,8 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services
+// SERVICES
+
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
@@ -22,11 +23,20 @@ builder.Services.AddScoped<
 
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultScheme = IdentityConstants.ApplicationScheme;
-    options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+    options.DefaultScheme =
+        IdentityConstants.ApplicationScheme;
+
+    options.DefaultSignInScheme =
+        IdentityConstants.ExternalScheme;
 })
 .AddIdentityCookies();
 
+// DATABASE
+
+var connectionString =
+    builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? throw new InvalidOperationException(
+        "Connection string not found.");
 var connectionString =
     builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException(
@@ -37,6 +47,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+// IDENTITY
+
 builder.Services.AddIdentityCore<ApplicationUser>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
@@ -45,7 +57,11 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
 .AddSignInManager()
 .AddDefaultTokenProviders();
 
+// CUSTOM SERVICES
+
 builder.Services.AddScoped<SkillService>();
+
+builder.Services.AddScoped<TemplateService>();
 
 builder.Services.AddSingleton<
     IEmailSender<ApplicationUser>,
@@ -53,13 +69,17 @@ builder.Services.AddSingleton<
 
 var app = builder.Build();
 
-// Pipeline
+// PIPELINE
+
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
 }
 else
 {
+    app.UseExceptionHandler(
+        "/Error",
+        createScopeForErrors: true);
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
 
     app.UseHsts();
@@ -79,6 +99,7 @@ app.UseAuthorization();
 
 app.UseAntiforgery();
 
+// MAP COMPONENTS
 
 
 app.MapRazorComponents<App>()

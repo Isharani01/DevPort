@@ -1,46 +1,41 @@
 ﻿@page "/"
-@using DevPort.Data
-@using DevPort.Models
-@inject ApplicationDbContext db
 
-<!-- HERO SECTION -->
+<!-- HERO -->
 
-<section class="hero-section">
+<section class="landing-hero">
 
-    <div class="hero-content">
+    <div class="hero-container">
 
-        <p class="hero-tag">
-            🚀 Full Stack Developer Portfolio
+        <p class="hero-badge">
+            ✨ Build Your Developer Presence
         </p>
 
         <h1>
-            Build Stunning
-            <span class="gradient-text">
-                Developer Portfolios
-            </span>
+            Create Beautiful
+            Developer Portfolios
         </h1>
 
-        <p class="hero-description">
+        <p class="hero-subtitle">
 
             DevPort helps developers showcase
             projects, skills and achievements
-            with a modern portfolio experience.
+            with a stunning modern portfolio platform.
 
         </p>
 
-        <div class="hero-buttons">
+        <div class="hero-actions">
 
-            <a href="/projects"
+            <a href="/template"
                    class="btn btn-primary btn-lg">
 
-                View Projects
+                Explore Templates
 
             </a>
 
             <a href="/profile"
                    class="btn btn-outline-light btn-lg">
 
-                My Profile
+                Get Started
 
             </a>
 
@@ -50,146 +45,54 @@
 
 </section>
 
-<!-- ABOUT -->
+<!-- FEATURES -->
 
-<section class="mb-5">
+<section class="landing-section">
 
-    <h2 class="mb-4">
-        About Me
-    </h2>
+    <div class="section-title">
 
-    @if (profile != null)
-    {
-        <div class="card-ui">
+        <h2>
+            Everything You Need
+        </h2>
 
-            <h3>@profile.Name</h3>
+        <p>
+            Build modern developer portfolios effortlessly.
+        </p>
 
-            <p>@profile.About</p>
+    </div>
+
+    <div class="features-grid">
+
+        <div class="feature-card-modern">
+
+            <h3>🎨 Modern UI</h3>
 
             <p>
-                📞 @profile.Phone
+                Beautiful responsive layouts
+                with premium design.
             </p>
 
         </div>
-    }
-    else
-    {
-        <div class="card-ui">
-            <p>No profile found.</p>
-        </div>
-    }
 
-</section>
+        <div class="feature-card-modern">
 
-<!-- SKILLS -->
+            <h3>⚡ Fast Performance</h3>
 
-<section class="mb-5">
-
-    <h2 class="mb-4">
-        Skills
-    </h2>
-
-    @if (skills.Count == 0)
-    {
-        <div class="card-ui">
-            <p>No skills added yet.</p>
-        </div>
-    }
-    else
-    {
-        <div class="card-ui">
-
-            @foreach (var s in skills)
-            {
-                <div class="skill-pill">
-
-                    🚀 @s.Name
-
-                </div>
-            }
-
-        </div>
-    }
-
-</section>
-
-<!-- PROJECTS -->
-
-<section class="mb-5">
-
-    <h2 class="mb-4">
-        Projects
-    </h2>
-
-    @if (projects.Count == 0)
-    {
-        <div class="card-ui">
-            <p>No projects added yet.</p>
-        </div>
-    }
-    else
-    {
-        <div class="row g-4">
-
-            @foreach (var p in projects)
-            {
-                <div class="col-md-6">
-
-                    <div class="card-ui project-card">
-
-                        <h4>@p.Title</h4>
-
-                        <p>@p.Description</p>
-
-                    </div>
-
-                </div>
-            }
-
-        </div>
-    }
-
-</section>
-
-<!-- STATS -->
-
-<section class="stats-section">
-
-    <div class="row g-4">
-
-        <div class="col-md-4">
-
-            <div class="card-ui stats-card">
-
-                <h2>@projects.Count+</h2>
-
-                <p>Projects Built</p>
-
-            </div>
+            <p>
+                Optimized Blazor application
+                with smooth experience.
+            </p>
 
         </div>
 
-        <div class="col-md-4">
+        <div class="feature-card-modern">
 
-            <div class="card-ui stats-card">
+            <h3>🌙 Dark Mode</h3>
 
-                <h2>@skills.Count+</h2>
-
-                <p>Skills Added</p>
-
-            </div>
-
-        </div>
-
-        <div class="col-md-4">
-
-            <div class="card-ui stats-card">
-
-                <h2>100%</h2>
-
-                <p>Responsive UI</p>
-
-            </div>
+            <p>
+                Elegant dark and light
+                theme support.
+            </p>
 
         </div>
 
@@ -197,22 +100,27 @@
 
 </section>
 
-@code {
+<!-- CTA -->
 
-    private DevPort.Models.Profile? profile;
+<section class="cta-section">
 
-    private List<Skill> skills = new();
+    <div class="cta-box">
 
-    private List<Project> projects = new();
+        <h2>
+            Start Building Today 🚀
+        </h2>
 
-    protected override void OnInitialized()
-    {
-        profile = db.Profiles
-            .OrderByDescending(x => x.Id)
-            .FirstOrDefault();
+        <p>
+            Create your modern developer portfolio in minutes.
+        </p>
 
-        skills = db.Skills.ToList();
+        <a href="/Account/Register"
+               class="btn btn-primary btn-lg">
 
-        projects = db.Projects.ToList();
-    }
-}
+            Create Account
+
+        </a>
+
+    </div>
+
+</section>

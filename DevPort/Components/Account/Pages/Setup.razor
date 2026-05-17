@@ -1,0 +1,99 @@
+﻿@page "/setup"
+@rendermode InteractiveServer
+
+@using DevPort.Data
+@using DevPort.Models
+@using Microsoft.Extensions.DependencyInjection
+
+@inject IServiceScopeFactory ScopeFactory
+@inject NavigationManager Navigation
+
+<h1 class="setup-title">
+    Build Your Portfolio 🚀
+</h1>
+
+<p class="setup-subtitle">
+    Enter your details to generate your portfolio.
+</p>
+
+<div class="setup-card">
+
+    <EditForm Model="profile"
+              OnValidSubmit="GeneratePortfolio">
+
+        <DataAnnotationsValidator />
+
+        <!-- NAME -->
+
+        <div class="mb-4">
+
+            <label class="auth-label">
+                Full Name
+            </label>
+
+            <InputText class="form-control auth-input"
+                       placeholder="Your name"
+                       @bind-Value="profile.Name" />
+
+        </div>
+
+        <!-- ABOUT -->
+
+        <div class="mb-4">
+
+            <label class="auth-label">
+                About You
+            </label>
+
+            <InputTextArea class="form-control auth-input"
+                           rows="5"
+                           placeholder="Tell us about yourself"
+                           @bind-Value="profile.About" />
+
+        </div>
+
+        <!-- PHONE -->
+
+        <div class="mb-4">
+
+            <label class="auth-label">
+                Phone Number
+            </label>
+
+            <InputText class="form-control auth-input"
+                       placeholder="+92..."
+                       @bind-Value="profile.Phone" />
+
+        </div>
+
+        <!-- BUTTON -->
+
+        <button type="submit"
+                class="btn btn-primary w-100 btn-lg">
+
+            Generate Portfolio
+
+        </button>
+
+    </EditForm>
+
+</div>
+
+@code {
+
+    private Profile profile = new();
+
+    private async Task GeneratePortfolio()
+    {
+        using var scope = ScopeFactory.CreateScope();
+
+        var db = scope.ServiceProvider
+            .GetRequiredService<ApplicationDbContext>();
+
+        db.Profiles.Add(profile);
+
+        await db.SaveChangesAsync();
+
+        Navigation.NavigateTo("/portfolio");
+    }
+}

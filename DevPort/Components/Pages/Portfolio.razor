@@ -1,0 +1,220 @@
+﻿@page "/portfolio"
+@using Microsoft.AspNetCore.Components.Authorization
+@using DevPort.Data
+@using DevPort.Models
+
+@inject ApplicationDbContext db
+
+<!-- HERO -->
+
+<section class="portfolio-hero">
+
+    <div class="portfolio-container">
+
+        <p class="hero-badge">
+            🚀 Developer Portfolio
+        </p>
+
+        <h1>
+
+            @(profile?.Name ?? "Your Name")
+
+        </h1>
+
+        <p class="portfolio-about">
+
+            @(profile?.About ??
+                "Build stunning developer portfolios with DevPort.")
+
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="/projects"
+                   class="btn btn-primary btn-lg">
+
+                View Projects
+
+            </a>
+
+            <a href="/profile"
+                   class="btn btn-outline-light btn-lg">
+
+                Edit Profile
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- SKILLS -->
+
+<section class="portfolio-section">
+
+    <div class="section-heading">
+
+        <h2>
+            Skills
+        </h2>
+
+        <p>
+            Technologies and tools I work with.
+        </p>
+
+    </div>
+
+    <div class="skills-wrapper">
+
+        @if (skills.Count == 0)
+        {
+            <p>No skills added yet.</p>
+        }
+        else
+        {
+            @foreach (var skill in skills)
+            {
+                <div class="skill-pill">
+
+                    ✨ @skill.Name
+
+                </div>
+            }
+        }
+
+    </div>
+
+</section>
+
+<!-- PROJECTS -->
+
+<section class="portfolio-section">
+
+    <div class="section-heading">
+
+        <h2>
+            Featured Projects
+        </h2>
+
+        <p>
+            Some of my recent work and creations.
+        </p>
+
+    </div>
+
+    <div class="projects-grid">
+
+        @if (projects.Count == 0)
+        {
+            <p>No projects added yet.</p>
+        }
+        else
+        {
+            @foreach (var project in projects)
+            {
+                <div class="project-card-modern">
+
+                    <div class="project-image">
+
+                        🚀
+
+                    </div>
+
+                    <div class="project-content">
+
+                        <h3>
+                            @project.Title
+                        </h3>
+
+                        <p>
+                            @project.Description
+                        </p>
+
+                    </div>
+
+                </div>
+            }
+        }
+
+    </div>
+
+</section>
+
+<!-- CTA -->
+
+<section class="portfolio-cta">
+
+    <section class="portfolio-cta">
+
+        <div class="cta-card">
+
+            <AuthorizeView>
+
+                <Authorized>
+
+                    <h2>
+                        Keep Building Amazing Projects ✨
+                    </h2>
+
+                    <p>
+                        Continue improving your portfolio
+                        and showcase your skills professionally.
+                    </p>
+
+                    <a href="/projects"
+                           class="btn btn-light btn-lg">
+
+                        Manage Projects
+
+                    </a>
+
+                </Authorized>
+
+                <NotAuthorized>
+
+                    <h2>
+                        Start Your Developer Journey 🚀
+                    </h2>
+
+                    <p>
+                        Create your portfolio and build
+                        your professional online presence.
+                    </p>
+
+                    <a href="/Account/Register"
+                           class="btn btn-light btn-lg">
+
+                        Create Free Account
+
+                    </a>
+
+                </NotAuthorized>
+
+            </AuthorizeView>
+
+        </div>
+
+    </section>
+
+</section>
+
+@code {
+
+    private DevPort.Models.Profile? profile;
+
+    private List<DevPort.Models.Skill> skills = new();
+    private List<DevPort.Models.Project> projects = new();
+
+    protected override void OnInitialized()
+    {
+        profile = db.Profiles
+            .OrderByDescending(x => x.Id)
+            .FirstOrDefault();
+
+        skills = db.Skills.ToList();
+
+        projects = db.Projects.ToList();
+    }
+}
