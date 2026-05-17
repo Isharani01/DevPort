@@ -1,149 +1,146 @@
 ﻿@inherits LayoutComponentBase
-@using Microsoft.AspNetCore.Components.Authorization
+@inject IJSRuntime JS
 
-<div class="@(isDarkMode ? "dark-mode" : "light-mode")">
+<div class="@ThemeClass">
 
     <!-- NAVBAR -->
 
-    <nav class="navbar navbar-expand-lg custom-navbar px-4">
+    <nav class="navbar navbar-expand-lg custom-navbar">
 
-        <a class="navbar-brand fw-bold fs-4" href="/">
-            DevPort 🚀
-        </a>
+        <div class="container">
 
-        <!-- TOGGLER -->
+            <!-- LOGO -->
 
-        <button class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navMenu">
+            <a class="navbar-brand" href="/">
+                DevPort 🚀
+            </a>
 
-            <span class="navbar-toggler-icon"></span>
+            <!-- MOBILE BUTTON -->
 
-        </button>
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarContent">
 
-        <!-- NAV MENU -->
+                <span class="navbar-toggler-icon"></span>
 
-        <div class="collapse navbar-collapse"
-             id="navMenu">
+            </button>
 
-            <ul class="navbar-nav ms-auto align-items-center gap-3">
+            <!-- NAV ITEMS -->
 
-                <!-- HOME -->
+            <div class="collapse navbar-collapse"
+                 id="navbarContent">
 
-                <li class="nav-item">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
 
-                    <NavLink class="nav-link"
-                             href="/">
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="/">
+                            Home
+                        </NavLink>
+                    </li>
 
-                        Home
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="/profile">
+                            Profile
+                        </NavLink>
+                    </li>
 
-                    </NavLink>
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="/projects">
+                            Projects
+                        </NavLink>
+                    </li>
 
-                </li>
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="/add-skill">
+                            Skills
+                        </NavLink>
+                    </li>
 
-                <!-- TEMPLATES -->
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="/template">
+                            Templates
+                        </NavLink>
+                    </li>
 
-                <li class="nav-item">
+                    <!-- THEME BUTTON -->
 
-                    <NavLink class="nav-link"
-                             href="/template">
+                    <li class="nav-item ms-lg-3">
 
-                        Templates
+                        <button class="theme-toggle-btn"
+                                @onclick="ToggleTheme">
 
-                    </NavLink>
+                            @(IsDarkMode ? "☀️" : "🌙")
 
-                </li>
+                        </button>
 
-                <!-- PORTFOLIO -->
+                    </li>
 
-                <li class="nav-item">
+                    <!-- AUTH -->
 
-                    <NavLink class="nav-link"
-                             href="/portfolio">
+                    <AuthorizeView>
 
-                        Portfolio
+                        <Authorized>
 
-                    </NavLink>
+                            <li class="nav-item ms-lg-3">
 
-                </li>
+                                <form action="/Account/Logout"
+                                      method="post">
 
-                <!-- THEME BUTTON -->
+                                    <AntiforgeryToken />
 
-                <li class="nav-item">
+                                    <button type="submit"
+                                            class="btn btn-outline-light">
 
-                    <button class="theme-toggle-btn"
-                            @onclick="ToggleTheme">
+                                        Logout
 
-                        @(isDarkMode ? "☀️" : "🌙")
+                                    </button>
 
-                    </button>
+                                </form>
 
-                </li>
+                            </li>
 
-                <!-- AUTH -->
+                        </Authorized>
 
-                <AuthorizeView>
+                        <NotAuthorized>
 
-                    <Authorized>
+                            <li class="nav-item ms-lg-3">
 
-                        <li class="nav-item">
+                                <NavLink class="btn btn-outline-light"
+                                         href="/Account/Login">
 
-                            <form action="/Account/Logout"
-                                  method="post">
+                                    Login
 
-                                <AntiforgeryToken />
+                                </NavLink>
 
-                                <button type="submit"
-                                        class="btn btn-outline-light rounded-pill px-4">
+                            </li>
 
-                                    Logout
+                            <li class="nav-item ms-lg-2">
 
-                                </button>
+                                <NavLink class="btn btn-primary"
+                                         href="/Account/Register">
 
-                            </form>
+                                    Get Started
 
-                        </li>
+                                </NavLink>
 
-                    </Authorized>
+                            </li>
 
-                    <NotAuthorized>
+                        </NotAuthorized>
 
-                        <li class="nav-item">
+                    </AuthorizeView>
 
-                            <NavLink class="btn btn-outline-light rounded-pill px-4"
-                                     href="/Account/Login">
+                </ul>
 
-                                Login
-
-                            </NavLink>
-
-                        </li>
-
-                        <li class="nav-item">
-
-                            <NavLink class="btn btn-primary rounded-pill px-4"
-                                     href="/Account/Register">
-
-                                Get Started
-
-                            </NavLink>
-
-                        </li>
-
-                    </NotAuthorized>
-
-                </AuthorizeView>
-
-            </ul>
+            </div>
 
         </div>
 
     </nav>
 
-    <!-- PAGE CONTENT -->
+    <!-- PAGE -->
 
-    <main class="container py-4">
+    <main>
 
         @Body
 
@@ -153,10 +150,28 @@
 
 @code {
 
-    private bool isDarkMode = true;
+    private bool IsDarkMode = true;
 
-    private void ToggleTheme()
+    private string ThemeClass =>
+        IsDarkMode ? "dark-mode" : "light-mode";
+
+    private async Task ToggleTheme()
     {
-        isDarkMode = !isDarkMode;
+        IsDarkMode = !IsDarkMode;
+
+        await JS.InvokeVoidAsync(
+            "localStorage.setItem",
+            "theme",
+            IsDarkMode ? "dark" : "light");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var savedTheme =
+            await JS.InvokeAsync<string>(
+                "localStorage.getItem",
+                "theme");
+
+        IsDarkMode = savedTheme != "light";
     }
 }
