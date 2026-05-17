@@ -1,8 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @inject IJSRuntime JS
-@using Microsoft.AspNetCore.Components.Authorization
 
-<div class="@ThemeClass">
+<div class="dark-mode">
 
     <!-- NAVBAR -->
 
@@ -27,32 +26,30 @@
 
             </button>
 
-            <!-- NAV ITEMS -->
+            <!-- NAVIGATION -->
 
             <div class="collapse navbar-collapse"
                  id="navbarContent">
 
-                <ul class="navbar-nav ms-auto align-items-lg-center">
+                <ul class="navbar-nav ms-auto align-items-center">
 
-                    <!-- HOME -->
-
-                    <li class="nav-item">
-
-                        <NavLink class="nav-link"
-                                 href="/">
-
-                            Home
-
-                        </NavLink>
-
-                    </li>
-
-                    <!-- ABOUT -->
+                    <!-- LINKS -->
 
                     <li class="nav-item">
 
                         <a class="nav-link"
-                               href="#about">
+                           href="/">
+
+                            Home
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a class="nav-link"
+                           href="#about">
 
                             About
 
@@ -60,12 +57,10 @@
 
                     </li>
 
-                    <!-- PROJECTS -->
-
                     <li class="nav-item">
 
                         <a class="nav-link"
-                               href="#projects">
+                           href="#projects">
 
                             Projects
 
@@ -73,29 +68,14 @@
 
                     </li>
 
-                    <!-- CONTACT -->
-
                     <li class="nav-item">
 
                         <a class="nav-link"
-                               href="#contact">
+                           href="#contact">
 
                             Contact
 
                         </a>
-
-                    </li>
-
-                    <!-- THEME -->
-
-                    <li class="nav-item ms-lg-3">
-
-                        <button class="theme-toggle-btn"
-                                @onclick="ToggleTheme">
-
-                            @(IsDarkMode ? "☀️" : "🌙")
-
-                        </button>
 
                     </li>
 
@@ -105,7 +85,7 @@
 
                         <Authorized>
 
-                            <li class="nav-item ms-lg-3">
+                            <li class="nav-item ms-3">
 
                                 <form action="/Account/Logout"
                                       method="post">
@@ -113,7 +93,7 @@
                                     <AntiforgeryToken />
 
                                     <button type="submit"
-                                            class="btn btn-outline-light">
+                                            class="login-btn">
 
                                         Logout
 
@@ -127,9 +107,9 @@
 
                         <NotAuthorized>
 
-                            <li class="nav-item ms-lg-3">
+                            <li class="nav-item ms-3">
 
-                                <NavLink class="btn btn-outline-light"
+                                <NavLink class="login-btn"
                                          href="/Account/Login">
 
                                     Login
@@ -138,9 +118,9 @@
 
                             </li>
 
-                            <li class="nav-item ms-lg-2">
+                            <li class="nav-item ms-2">
 
-                                <NavLink class="btn btn-primary"
+                                <NavLink class="start-btn"
                                          href="/Account/Register">
 
                                     Get Started
@@ -154,73 +134,6 @@
                     </AuthorizeView>
 
                 </ul>
-
-                    <!-- THEME BUTTON -->
-
-                    <li class="nav-item ms-lg-3">
-
-                        <button class="theme-toggle-btn"
-                                @onclick="ToggleTheme">
-
-                            @(IsDarkMode ? "☀️" : "🌙")
-
-                        </button>
-
-                    </li>
-
-                    <!-- AUTH -->
-
-                    <AuthorizeView>
-
-                        <Authorized>
-
-                            <li class="nav-item ms-lg-3">
-
-                                <form action="/Account/Logout"
-                                      method="post">
-
-                                    <AntiforgeryToken />
-
-                                    <button type="submit"
-                                            class="btn btn-outline-light">
-
-                                        Logout
-
-                                    </button>
-
-                                </form>
-
-                            </li>
-
-                        </Authorized>
-
-                        <NotAuthorized>
-
-                            <li class="nav-item ms-lg-3">
-
-                                <NavLink class="btn btn-outline-light"
-                                         href="/Account/Login">
-
-                                    Login
-
-                                </NavLink>
-
-                            </li>
-
-                            <li class="nav-item ms-lg-2">
-
-                                <NavLink class="btn btn-primary"
-                                         href="/Account/Register">
-
-                                    Get Started
-
-                                </NavLink>
-
-                            </li>
-
-                        </NotAuthorized>
-
-                    </AuthorizeView>
 
             </div>
 
@@ -237,36 +150,3 @@
     </main>
 
 </div>
-
-@code {
-
-    private bool IsDarkMode = true;
-
-    private string ThemeClass =>
-        IsDarkMode ? "dark-mode" : "light-mode";
-
-    private async Task ToggleTheme()
-    {
-        IsDarkMode = !IsDarkMode;
-
-        await JS.InvokeVoidAsync(
-            "localStorage.setItem",
-            "theme",
-            IsDarkMode ? "dark" : "light");
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            var savedTheme =
-                await JS.InvokeAsync<string>(
-                    "localStorage.getItem",
-                    "theme");
-
-            IsDarkMode = savedTheme != "light";
-
-            StateHasChanged();
-        }
-    }
-}
