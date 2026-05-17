@@ -34,35 +34,126 @@
 
                 <ul class="navbar-nav ms-auto align-items-lg-center">
 
+                    <!-- HOME -->
+
                     <li class="nav-item">
-                        <NavLink class="nav-link" href="/">
+
+                        <NavLink class="nav-link"
+                                 href="/">
+
                             Home
+
                         </NavLink>
+
                     </li>
 
-                    <li class="nav-item">
-                        <NavLink class="nav-link" href="/profile">
-                            Profile
-                        </NavLink>
-                    </li>
+                    <!-- ABOUT -->
 
                     <li class="nav-item">
-                        <NavLink class="nav-link" href="/projects">
+
+                        <a class="nav-link"
+                               href="#about">
+
+                            About
+
+                        </a>
+
+                    </li>
+
+                    <!-- PROJECTS -->
+
+                    <li class="nav-item">
+
+                        <a class="nav-link"
+                               href="#projects">
+
                             Projects
-                        </NavLink>
+
+                        </a>
+
                     </li>
 
-                    <li class="nav-item">
-                        <NavLink class="nav-link" href="/add-skill">
-                            Skills
-                        </NavLink>
-                    </li>
+                    <!-- CONTACT -->
 
                     <li class="nav-item">
-                        <NavLink class="nav-link" href="/template">
-                            Templates
-                        </NavLink>
+
+                        <a class="nav-link"
+                               href="#contact">
+
+                            Contact
+
+                        </a>
+
                     </li>
+
+                    <!-- THEME -->
+
+                    <li class="nav-item ms-lg-3">
+
+                        <button class="theme-toggle-btn"
+                                @onclick="ToggleTheme">
+
+                            @(IsDarkMode ? "☀️" : "🌙")
+
+                        </button>
+
+                    </li>
+
+                    <!-- AUTH -->
+
+                    <AuthorizeView>
+
+                        <Authorized>
+
+                            <li class="nav-item ms-lg-3">
+
+                                <form action="/Account/Logout"
+                                      method="post">
+
+                                    <AntiforgeryToken />
+
+                                    <button type="submit"
+                                            class="btn btn-outline-light">
+
+                                        Logout
+
+                                    </button>
+
+                                </form>
+
+                            </li>
+
+                        </Authorized>
+
+                        <NotAuthorized>
+
+                            <li class="nav-item ms-lg-3">
+
+                                <NavLink class="btn btn-outline-light"
+                                         href="/Account/Login">
+
+                                    Login
+
+                                </NavLink>
+
+                            </li>
+
+                            <li class="nav-item ms-lg-2">
+
+                                <NavLink class="btn btn-primary"
+                                         href="/Account/Register">
+
+                                    Get Started
+
+                                </NavLink>
+
+                            </li>
+
+                        </NotAuthorized>
+
+                    </AuthorizeView>
+
+                </ul>
 
                     <!-- THEME BUTTON -->
 
