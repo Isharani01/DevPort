@@ -31,6 +31,16 @@
 
         </p>
 
+        <!-- ERROR MESSAGE -->
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <div class="alert alert-danger">
+
+                @errorMessage
+
+            </div>
+        }
+
         <StatusMessage Message="@Message" />
 
         <EditForm Model="Input"
@@ -121,6 +131,8 @@
 
     private IEnumerable<IdentityError>? identityErrors;
 
+    private string? errorMessage;
+
     [SupplyParameterFromForm]
     private InputModel Input { get; set; } = default!;
 
@@ -158,9 +170,15 @@
                 user,
                 Input.Password);
 
+        // DUPLICATE EMAIL MESSAGE
+
         if (!result.Succeeded)
         {
+            errorMessage =
+                "This email is already registered. Please use another email.";
+
             identityErrors = result.Errors;
+
             return;
         }
 
@@ -194,25 +212,11 @@
             Input.Email,
             HtmlEncoder.Default.Encode(callbackUrl));
 
-        if (UserManager.Options.SignIn.RequireConfirmedAccount)
-        {
-            RedirectManager.RedirectTo(
-                "Account/RegisterConfirmation",
+        await SignInManager.SignInAsync(
+            user,
+            isPersistent: false);
 
-                new()
-                {
-                    ["email"] = Input.Email,
-                    ["returnUrl"] = ReturnUrl
-                });
-        }
-        else
-        {
-            await SignInManager.SignInAsync(
-                user,
-                isPersistent: false);
-
-            RedirectManager.RedirectTo(ReturnUrl);
-        }
+        RedirectManager.RedirectTo("/Templates");
     }
 
     private ApplicationUser CreateUser()

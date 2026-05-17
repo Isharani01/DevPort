@@ -1,140 +1,175 @@
-﻿@page "/template"
-@rendermode InteractiveServer
-@inject DevPort.Services.TemplateService TemplateService
-@inject NavigationManager Navigation
-<section class="templates-page">
+﻿@page "/Templates"
 
-    <div class="templates-header">
+<section class="projects-section">
 
-        <p class="hero-badge">
-            ✨ Premium Templates
-        </p>
+    <div class="container">
 
-        <h1>
-            Explore Beautiful Portfolio Designs
-        </h1>
+        <!-- TITLE -->
 
-        <p>
-            Choose modern layouts crafted for developers,
-            designers and creators.
-        </p>
+        <div class="section-title">
 
-    </div>
+            <h2>
+                Choose Your Portfolio Template
+            </h2>
 
-    <!-- TEMPLATE GRID -->
+            <p>
+                Select a professional template
+                to start building your portfolio.
+            </p>
 
-    <div class="template-grid">
+        </div>
 
-        <!-- TEMPLATE 1 -->
+        <!-- TEMPLATE GRID -->
 
-        <div class="template-preview-card">
+        <div class="projects-grid">
 
-            <div class="template-preview one">
+            <!-- TEMPLATE 1 -->
 
-                <div class="mini-navbar"></div>
+            <div class="project-card">
 
-                <div class="mini-content">
+                <div class="template-preview purple-template">
 
-                    <div class="mini-title"></div>
+                    <h4>
+                        Modern Purple
+                    </h4>
 
-                    <div class="mini-text"></div>
+                </div>
 
-                    <div class="mini-buttons">
+                <h3 class="mt-4">
+                    🚀 Modern Purple
+                </h3>
 
-                        <span></span>
-                        <span></span>
+                <p>
+                    Elegant modern developer
+                    portfolio with premium UI.
+                </p>
 
-                    </div>
+                <ul class="template-features">
+
+                    <li>
+                        ✔ Premium Hero Section
+                    </li>
+
+                    <li>
+                        ✔ Glassmorphism Cards
+                    </li>
+
+                    <li>
+                        ✔ Purple Aesthetic UI
+                    </li>
+
+                </ul>
+
+                <div class="hero-actions mt-4">
+
+                    <a href="/Setup"
+                           class="start-btn">
+
+                        Use Template
+
+                    </a>
 
                 </div>
 
             </div>
 
-            <div class="template-info">
+            <!-- TEMPLATE 2 -->
 
-                <h3>
-                    Minimal Dark
+            <div class="project-card">
+
+                <div class="template-preview minimal-template">
+
+                    <h4>
+                        Minimal Professional
+                    </h4>
+
+                </div>
+
+                <h3 class="mt-4">
+                    💼 Minimal Professional
                 </h3>
 
                 <p>
-                    Elegant developer portfolio
-                    with modern dark aesthetics.
+                    Clean minimal layout
+                    for developers and students.
                 </p>
 
-                <a href="/setup"
-                       class="btn btn-primary">
+                <ul class="template-features">
 
-                    Use Template
+                    <li>
+                        ✔ Minimal Clean UI
+                    </li>
 
-                </a>
+                    <li>
+                        ✔ Professional Layout
+                    </li>
+
+                    <li>
+                        ✔ Recruiter Friendly
+                    </li>
+
+                </ul>
+
+                <div class="hero-actions mt-4">
+
+                    <a href="/Setup"
+                           class="start-btn">
+
+                        Use Template
+
+                    </a>
+
+                </div>
 
             </div>
 
-        </div>
+            <!-- TEMPLATE 3 -->
 
-        <!-- TEMPLATE 2 -->
+            <div class="project-card">
 
-        <div class="template-preview-card">
+                <div class="template-preview creative-template">
 
-            <div class="template-preview two">
+                    <h4>
+                        Creative Designer
+                    </h4>
 
-                <div class="glass-box"></div>
+                </div>
 
-                <div class="glass-box small"></div>
-
-            </div>
-
-            <div class="template-info">
-
-                <h3>
-                    Glass UI
+                <h3 class="mt-4">
+                    🌈 Creative Designer
                 </h3>
 
                 <p>
-                    Premium glassmorphism
-                    portfolio experience.
-                </p>
-
-                <a href="/setup"
-                       class="btn btn-primary">
-
-                    Use Template
-
-                </a>
-
-            </div>
-
-        </div>
-
-        <!-- TEMPLATE 3 -->
-
-        <div class="template-preview-card">
-
-            <div class="template-preview three">
-
-                <div class="gradient-circle"></div>
-
-                <div class="gradient-circle second"></div>
-
-            </div>
-
-            <div class="template-info">
-
-                <h3>
-                    Creative Gradient
-                </h3>
-
-                <p>
-                    Bold colorful layouts
+                    Beautiful creative portfolio
                     for modern creators.
                 </p>
 
-                <a href="/setup"
-                       class="btn btn-primary">
+                <ul class="template-features">
 
-                    Use Template
+                    <li>
+                        ✔ Colorful Design
+                    </li>
 
-                </a>
+                    <li>
+                        ✔ Creative Sections
+                    </li>
+
+                    <li>
+                        ✔ Designer Portfolio
+                    </li>
+
+                </ul>
+
+                <div class="hero-actions mt-4">
+
+                    <a href="/Setup"
+                           class="start-btn">
+
+                        Use Template
+
+                    </a>
+
+                </div>
 
             </div>
 
